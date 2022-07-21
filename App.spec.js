@@ -1,10 +1,19 @@
-import {render} from '@testing-library/react-native';
+import {fireEvent, render, screen} from '@testing-library/react-native';
 import React from 'react';
 import App from './App';
 
 describe('App', () => {
-  it('renders a hello message', () => {
-    const {queryByText} = render(<App />);
-    expect(queryByText('Home Screen')).not.toBeNull();
+  it('allows navigation', () => {
+    render(<App />);
+
+    expect(screen.queryByText('Home Screen')).not.toBeNull();
+
+    fireEvent.press(screen.getByText('Go to Details'));
+    expect(screen.queryByText('Details Screen')).not.toBeNull();
+    expect(screen.queryByText('Home Screen')).toBeNull();
+
+    fireEvent.press(screen.getByText('Home'));
+    expect(screen.queryByText('Home Screen')).not.toBeNull();
+    expect(screen.queryByText('Details Screen')).toBeNull();
   });
 });
